@@ -11,9 +11,9 @@
                 <div class="flex flex-wrap -m-4">
                     @foreach($plans as $plan)
                         <div class="p-4 xl:w-1/3 md:w-1/3 w-full">
-                            <div class="h-full p-6 rounded-lg border-2 border-red-500 flex flex-col relative overflow-hidden">
+                            <div class="h-full p-6 rounded-lg border-2 border-main  flex flex-col relative overflow-hidden">
                                 @if($plan->interval_count === 1)
-                                    <span class="bg-red-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">
+                                    <span class="bg-main text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">
                                         POPULAR
                                     </span>
                                 @endif
@@ -36,7 +36,7 @@
                                 <form method="post" action="{{ route('billing.process_subscription') }}">
                                     @csrf
                                     <input type="hidden" name="price_id" value="{{ $plan->id }}" />
-                                    <button type="submit" class="flex items-center mt-auto text-white bg-red-500 border-0 py-2 px-4 w-full focus:outline-none hover:bg-red-600 rounded">
+                                    <button type="submit" class="flex items-center mt-auto text-white bg-main  border-0 py-2 px-4 w-full focus:outline-none hover:bg-main/50 rounded">
                                         Apuntarme
                                         <svg fill="none" stroke="currentColor" stroke-linecap="round"
                                              stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-auto"

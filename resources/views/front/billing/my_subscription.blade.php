@@ -13,7 +13,7 @@
                         <span class="font-semibold title-font text-white">Plan contratado: {{ $subscription }}</span>
                     </div>
                     <div class="md:flex-grow">
-                        <a href="#" class="text-white bg-red-500 border-0 py-2 px-4 focus:outline-none hover:bg-red-600 rounded">Ver mi facturación</a>
+                        <a href="#" class="text-white bg-main border-0 py-2 px-4 focus:outline-none hover:bg-main/50 rounded">Ver mi facturación</a>
                     </div>
                 </div>
             </div>
