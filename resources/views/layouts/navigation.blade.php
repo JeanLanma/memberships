@@ -15,6 +15,15 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('billing.payment_method_form')" :active="request()->routeIs('billing.payment_method_form')">
+                        {{ __('Método de pago') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('billing.plans')" :active="request()->routeIs('billing.plans')">
+                        {{ __('Planes') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('billing.my_subscription')" :active="request()->routeIs('billing.my_subscription')">
+                        {{ __('Mi suscripción') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -67,7 +76,8 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>

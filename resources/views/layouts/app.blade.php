@@ -29,6 +29,9 @@
 
             <!-- Page Content -->
             <main>
+                @if (session("notification"))
+                    @include("components.notification")
+                @endif
                 {{ $slot }}
             </main>
 
