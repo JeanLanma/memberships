@@ -39,3 +39,7 @@ function getSubscriptionNameForUser(): string
     }
     return "N/D";
 }
+
+function isSubscribed(): bool {
+    return auth()->check() && auth()->user()->subscribed();
+}
