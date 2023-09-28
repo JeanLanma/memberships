@@ -39,6 +39,12 @@ Route::middleware('auth')->group(function () {
         Route::post("/subscribe", "processSubscription")->name("process_subscription");
         Route::get("/my-subscription", "mySubscription")->name("my_subscription");
     });
+
+    Route::group(["middleware" => "is_stripe_customer"], function () {
+        Route::get('/billing/portal', function () {
+            return auth()->user()->redirectToBillingPortal(route('dashboard'));
+        })->name("billing.portal");
+    });
 });
 
 require __DIR__.'/auth.php';
