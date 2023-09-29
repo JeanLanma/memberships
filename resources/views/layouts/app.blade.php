@@ -37,5 +37,12 @@
 
             @stack('scripts')
         </div>
+
+        @if (true)
+            <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
+            <script>
+                Swal.fire('Se ha cargado SweetAlert')
+            </script>   
+        @endif
     </body>
 </html>
