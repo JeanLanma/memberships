@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Memberships') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,20 +29,18 @@
 
             <!-- Page Content -->
             <main>
-                @if (session("notification"))
-                    @include("components.notification")
-                @endif
                 {{ $slot }}
             </main>
-
+            
+            <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
+            <script src="{{ asset('assets/js/alerts.js') }}"></script>
+            @if (session("notification"))
+                <script>
+                    Alert('{{ session("notification")["title"] }}', '{{ session("notification")["message"] }}', '{{ session("notification")["type"] ?? null }}' );
+                </script>
+            @endif
             @stack('scripts')
         </div>
 
-        @if (true)
-            <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
-            <script>
-                Swal.fire('Se ha cargado SweetAlert')
-            </script>   
-        @endif
     </body>
 </html>

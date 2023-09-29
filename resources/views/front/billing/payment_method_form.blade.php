@@ -74,7 +74,7 @@
             );
 
             if (error) {
-                alert(error.message)
+                errorAlert('Error...', error.message)
             } else {
                 document.getElementById("pm").value = setupIntent.payment_method;
                 document.getElementById("card_holder_name").value = cardHolderName.value;
