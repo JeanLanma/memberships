@@ -8,15 +8,20 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight p-6 md:px-32 lg:px-72 pt-16">
+                        Información de pago
+                    </h2>
+                </div>
+                <div class="p-6 bg-white border-b border-gray-200 md:py-8 md:px-32 lg:px-72">
                     <div class="flex flex-wrap -m-4">
-                        <div class="p-4 lg:w-1/2 md:w-full">
+                        <div class="p-4 lg:w-1/2 w-full">
                             <div class="relative mb-4">
                                 <input placeholder="Titular" type="email" id="card-holder-name" name="card-holder-name"
-                                       class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                    class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                             </div>
                         </div>
-                        <div class="p-4 lg:w-1/2 md:w-full">
+                        <div class="p-4 lg:w-1/2 sm:w-full">
                             <div class="relative mb-4">
                                 <select class="form-select appearance-none block w-full" id="country" name="country">
                                     @foreach($countries as $country)
@@ -28,11 +33,11 @@
                     </div>
 
                     <!-- Stripe Elements Placeholder -->
-                    <div id="card-element"></div>
+                    <div class="my-4" id="card-element"></div>
 
                     <button id="card-button"
                         data-secret="{{ $intent->client_secret }}"
-                        class="text-white bg-indigo-500 border-0 py-2 px-6 mt-5 focus:outline-none hover:bg-indigo-600 rounded"
+                        class="w-full text-white bg-indigo-500 border-0 py-2 px-6 mt-5 focus:outline-none hover:bg-indigo-600 rounded"
                     >
                         Actualizar método de pago
                     </button>

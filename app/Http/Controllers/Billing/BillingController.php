@@ -46,7 +46,7 @@ class BillingController extends Controller
     public function plans()
     {
         if (!auth()->user()->hasDefaultPaymentMethod()) {
-            return redirect()->back();
+            return redirect()->route('billing.payment_method_form');
         }
 
         $key = config("cashier.secret");
