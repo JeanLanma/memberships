@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Billing\BillingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Projobi\ProjobiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,4 +48,12 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+
+Route::controller(ProjobiController::class)
+    ->as('projobi.')
+    ->prefix('projobi')
+    ->group( function () {
+        Route::get("/", "index")->name("index");
+        Route::get('/users/{id}', "getUserById")->name("getUserById");
+    });
 require __DIR__.'/auth.php';
