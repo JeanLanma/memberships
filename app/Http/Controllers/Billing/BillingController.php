@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Billing;
 
-use App\Http\Controllers\Controller;
-use App\Models\Country;
-use Illuminate\Http\Request;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Stripe\StripeClient;
+use App\Models\Country;
+use App\Services\Stripe\StripePlanAdapter;
 
 class BillingController extends Controller
 {
@@ -48,15 +49,22 @@ class BillingController extends Controller
         if (!auth()->user()->hasDefaultPaymentMethod()) {
             return redirect()->route('billing.payment_method_form');
         }
-
+        // if( auth()->user()->subscribed() ) {
+        //     return redirect()->route('billing.my_subscription');
+        // }
+        dump(auth()->user()->subscribed());
         $key = config("cashier.secret");
         $stripe = new StripeClient($key);
 
         $plans = $stripe->plans->all();
 
         $plans = $plans->data;
-
-
+        
+        foreach ($plans as $plan) {
+            $plan->metadata = StripePlanAdapter::PlanMetadataAdapter($plan);
+            $plan->features = StripePlanAdapter::FilterPlanFeatures($plan->metadata);
+        }
+        // dd($plans);
         return view("front.billing.plans", [
             "plans" => $plans,
         ]);

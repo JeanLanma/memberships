@@ -5,14 +5,23 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="mt-8 max-w-7xl mx-auto px-5 md:px-40">
+        <h1 class="sm:text-3xl text-2xl font-medium title-font text-center text-gray-900">Gracias por interesarte en ser parte de <span class="text-main">Projobi</span> a continuación te mostramos nuestros planes.
+            @if (!auth()->user()->subscribed())      
+                <br class="hidden sm:block">
+                <span class="text-main">¡Recuerda que tu primer mes es GRATIS!</span>
+            @endif    
+        </h1>
+    </div>
+
+    <div class="pb-12 mt-8 max-w-7xl mx-auto">
         <section class="text-gray-600 body-font overflow-hidden">
             <div class="container px-5 mx-auto">
                 <div class="flex flex-wrap -m-4">
                     @foreach($plans as $plan)
-                        <div class="p-4 xl:w-1/3 md:w-1/3 w-full">
+                        <div class="p-4 md:w-1/3 w-full">
                             <div class="h-full p-6 rounded-lg border-2 border-main  flex flex-col relative overflow-hidden">
-                                @if($plan->interval_count === 1)
+                                @if($plan->metadata->adds == 2)
                                     <span class="bg-main text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">
                                         POPULAR
                                     </span>
@@ -23,8 +32,8 @@
                                 <h1 class="text-5xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
                                     <span>{{ formatCurrency($plan->amount / 100) }}</span>
                                 </h1>
-                                <p class="flex items-center text-gray-600 mb-2">
-                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                <p class="flex items-center text-gray-600 mb-4">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-main text-white rounded-full flex-shrink-0">
                                       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                            stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
                                         <path d="M20 6L9 17l-5-5"></path>
@@ -32,6 +41,17 @@
                                     </span>
                                     Acceso completo a la plataforma
                                 </p>
+                                @foreach((array)$plan->features as $key => $value)
+                                <p class="flex items-center text-gray-600 mb-4">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-main text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                           stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>
+                                    {{ $value }}
+                                </p>
+                                @endforeach
 
                                 <form method="post" action="{{ route('billing.process_subscription') }}">
                                     @csrf
