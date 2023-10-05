@@ -16,10 +16,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'Desarrollo',
             'email' => 'desarrollo.software@pcbtroniks.com',
         ]);
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
 
         $this->call(CountrySeeder::class);
     }

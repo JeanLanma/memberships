@@ -9,21 +9,21 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight p-6 md:px-32 lg:px-72 pt-16">
+                    <h2 class="font-semibold text-2xl text-gray-800 leading-tight p-6 md:px-32 lg:px-72 pt-12">
                         Información de pago
                     </h2>
                 </div>
-                <div class="p-6 bg-white border-b border-gray-200 md:py-8 md:px-32 lg:px-72">
+                <div class="p-6 bg-white border-b border-gray-200 md:pt-8 md:px-32 lg:px-72 pb-20">
                     <div class="flex flex-wrap -m-4">
                         <div class="p-4 lg:w-1/2 w-full">
                             <div class="relative mb-4">
-                                <input placeholder="Titular" type="email" id="card-holder-name" name="card-holder-name"
+                                <input placeholder="Titular de la tarjeta" type="text" id="card-holder-name" name="card-holder-name"
                                     class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                             </div>
                         </div>
                         <div class="p-4 lg:w-1/2 sm:w-full">
                             <div class="relative mb-4">
-                                <select class="form-select appearance-none block w-full" id="country" name="country">
+                                <select class="form-select appearance-none block w-full rounded" id="country" name="country">
                                     @foreach($countries as $country)
                                         <option value="{{ $country->id }}">{{ $country->name }}</option>
                                     @endforeach
@@ -33,7 +33,12 @@
                     </div>
 
                     <!-- Stripe Elements Placeholder -->
-                    <div class="my-4" id="card-element"></div>
+                    <div class="my-4 border border-gray-300 py-3 px-3 rounded"
+                        id="card-element"></div>
+
+                    <div class="w-40">
+                        <img class="w-full" src="{{ asset('assets/visa-mastercard.png') }}" alt="visa-mastercard logo">
+                    </div>
 
                     <button id="card-button"
                         data-secret="{{ $intent->client_secret }}"
@@ -59,7 +64,27 @@
         const stripe = Stripe('{{ config("cashier.key") }}');
 
         const elements = stripe.elements();
-        const cardElement = elements.create('card');
+        const cardElement = elements.create('card', {
+            style: {
+                base: {
+                color: '#303030',
+                fontWeight: '500',
+                fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+                fontSize: '16px',
+                fontSmoothing: 'antialiased',
+                ':-webkit-autofill': {
+                    color: '#fce883',
+                },
+                '::placeholder': {
+                    color: '#303030',
+                },
+                },
+                invalid: {
+                iconColor: '#FFC7EE',
+                color: '#FFC7EE',
+                },
+            },
+        });
 
         cardElement.mount('#card-element');
 
