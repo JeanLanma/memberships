@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'is_stripe_customer' => \App\Http\Middleware\EnsureUserIsStripeCustomer::class,
         'is_subscribed' => \App\Http\Middleware\EnsureUserIsSubscribed::class,
+        'auth.projobi_user' => \App\Http\Middleware\AuthenticateProjobiUser::class,
     ];
 }
