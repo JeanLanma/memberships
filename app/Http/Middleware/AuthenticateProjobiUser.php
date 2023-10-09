@@ -16,38 +16,42 @@ class AuthenticateProjobiUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(true)
+        if(auth()->check())
         {
             return $next($request);
         }
-        else 
+        else if($request->has('handShake') && $request->has('user_id'))
         {
+            $ProjobiHandshake = 'secret';
+            // Check if request is from projobi
+            if($request->handShake != $ProjobiHandshake)
+            {
+                return redirect()->back();
+            }
+
             // check if user
             if(!isset($request->user_id) || !isset($request->handShake))
             {
                 return redirect()->back();
             }
-            
             // check if user exists
             $ProjobiUser = GetProjobiUserService::getUserById($request->user_id);
             if(!$ProjobiUser)
             {
-                return redirect()->back();
+                return abort(404);
             }
 
-            // check if handshake is correct
-            // Code..
-
             // check if user exists in our database
-            $ProjobiUser = \App\Models\User::where('projobi_user_id', $request->user_id)->first();
-            if(!$ProjobiUser)
+            $user = \App\Models\User::where('projobi_user_id', $request->user_id)->orWhere('email', $ProjobiUser->email)->first();
+            if(!$user)
             {
                 // create user
                 $user = \App\Services\Projobi\PostProjobiUserService::postProjobiUser($ProjobiUser);
                 // login user
                 auth()->loginUsingId($user->id);
             }
-            // dd($request->all(), GetProjobiUserService::getUserById($request->user_id));
+            auth()->loginUsingId($user->id);
+
             return $next($request);
         }
         return $next($request);
