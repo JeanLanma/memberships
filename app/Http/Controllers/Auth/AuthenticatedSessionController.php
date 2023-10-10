@@ -43,6 +43,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
+        return redirect(config('projobi.logout_redirect'));
         return redirect('/');
     }
 }

@@ -16,11 +16,13 @@ class AuthenticateProjobiUser
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // dd($request->all(), $request->header('referer') );
         if(auth()->check())
         {
             return $next($request);
         }
-        else if($request->has('handShake') && $request->has('user_id'))
+
+        else if($request->has('handShake') && $request->has('user_id') && $request->header('referer') == 'http://projobi.test:8081/')
         {
             $ProjobiHandshake = 'secret';
             // Check if request is from projobi
@@ -47,13 +49,11 @@ class AuthenticateProjobiUser
             {
                 // create user
                 $user = \App\Services\Projobi\PostProjobiUserService::postProjobiUser($ProjobiUser);
-                // login user
-                auth()->loginUsingId($user->id);
             }
-            auth()->loginUsingId($user->id);
 
-            return $next($request);
+            auth()->loginUsingId($user->id);
         }
+
         return $next($request);
     }
 }

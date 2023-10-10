@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware(['web', 'auth.projobi_user'])
+            Route::middleware(['auth.projobi_user', 'web'])
                 ->group(base_path('routes/web.php'));
         });
     }
