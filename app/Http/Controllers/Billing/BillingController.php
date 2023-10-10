@@ -81,10 +81,21 @@ class BillingController extends Controller
         $stripe = new StripeClient($key);
         $plan = $stripe->plans->retrieve(request("price_id"));
         try {
-            auth()
+
+            if(true) {
+                auth()
+                ->user()
+                ->newSubscription('default', request("price_id"))
+                ->trialDays(10)
+                ->create(auth()->user()->defaultPaymentMethod()->id);
+            } else {
+                auth()
                 ->user()
                 ->newSubscription('default', request("price_id"))
                 ->create(auth()->user()->defaultPaymentMethod()->id);
+            }
+
+
 
                 return redirect(route("billing.my_subscription"))
                     ->with('notification', [
