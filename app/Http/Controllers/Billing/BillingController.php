@@ -52,7 +52,6 @@ class BillingController extends Controller
         if( auth()->user()->subscribed() ) {
             return redirect()->route('billing.my_subscription');
         }
-        dump(auth()->user()->subscribed());
         $key = config("cashier.secret");
         $stripe = new StripeClient($key);
 

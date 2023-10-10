@@ -15,9 +15,11 @@
                     <x-nav-link :href="route('billing.payment_method_form')" :active="request()->routeIs('billing.payment_method_form')">
                         {{ __('Método de pago') }}
                     </x-nav-link>
+                    @if (!isSubscribed())
                     <x-nav-link :href="route('billing.plans')" :active="request()->routeIs('billing.plans')">
                         {{ __('Planes') }}
                     </x-nav-link>
+                    @endif
                     <x-nav-link :href="route('billing.my_subscription')" :active="request()->routeIs('billing.my_subscription')">
                         {{ __('Mi suscripción') }}
                     </x-nav-link>
@@ -52,7 +54,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Cerrar session') }}
+                                {{ __('Volver a projobi') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -78,9 +80,11 @@
             <x-nav-link :href="route('billing.payment_method_form')" :active="request()->routeIs('billing.payment_method_form')">
                 {{ __('Método de pago') }}
             </x-responsive-nav-link>
+            @if (!isSubscribed())
             <x-nav-link :href="route('billing.plans')" :active="request()->routeIs('billing.plans')">
                 {{ __('Planes') }}
             </x-responsive-nav-link>
+            @endif
             <x-nav-link :href="route('billing.my_subscription')" :active="request()->routeIs('billing.my_subscription')">
                 {{ __('Mi suscripción') }}
             </x-responsive-nav-link>
@@ -105,7 +109,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Cerrar session') }}
+                        {{ __('Volver a projobi') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
