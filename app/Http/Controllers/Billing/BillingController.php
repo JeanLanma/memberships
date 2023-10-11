@@ -82,11 +82,11 @@ class BillingController extends Controller
         $plan = $stripe->plans->retrieve(request("price_id"));
         try {
 
-            if(true) {
+            if(request()->has('promo_code')) {
                 auth()
                 ->user()
                 ->newSubscription('default', request("price_id"))
-                ->trialDays(10)
+                ->trialDays(30)
                 ->create(auth()->user()->defaultPaymentMethod()->id);
             } else {
                 auth()
