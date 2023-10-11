@@ -56,4 +56,8 @@ Route::controller(ProjobiController::class)
         Route::get("/", "index")->name("index");
         Route::get('/users/{id}', "getUserById")->name("getUserById");
     });
+
+Route::get('projobi-redirect', function () {
+    return redirect()->away(config('projobi.logout_redirect'));
+})->name('projobi.logout_redirect');
 require __DIR__.'/auth.php';

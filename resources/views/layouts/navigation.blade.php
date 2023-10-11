@@ -5,8 +5,14 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a id="parent-slide-top" href="{{ config('projobi.logout_redirect') }}" class="flex items-end">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <p class="font-bold text-2xl text-main flex items-center slide-top slide-right">
+                            <svg id="use-slide-top" class="h-6 slide-top-out" fill="#0ec6d5" viewBox="-102.4 -102.4 1228.80 1228.80" xmlns="http://www.w3.org/2000/svg" stroke="#0ec6d5" transform="rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M222.927 580.115l301.354 328.512c24.354 28.708 20.825 71.724-7.883 96.078s-71.724 20.825-96.078-7.883L19.576 559.963a67.846 67.846 0 01-13.784-20.022 68.03 68.03 0 01-5.977-29.488l.001-.063a68.343 68.343 0 017.265-29.134 68.28 68.28 0 011.384-2.6 67.59 67.59 0 0110.102-13.687L429.966 21.113c25.592-27.611 68.721-29.247 96.331-3.656s29.247 68.721 3.656 96.331L224.088 443.784h730.46c37.647 0 68.166 30.519 68.166 68.166s-30.519 68.166-68.166 68.166H222.927z"></path></g></svg>    
+                            <span id="use-slide-right">
+                                volver
+                            </span>
+                        </p>
                     </a>
                 </div>
 
@@ -116,3 +122,27 @@
         </div>
     </div>
 </nav>
+
+
+@push('scripts')
+    <script>
+        const parentAniTopElement = document.querySelector('#parent-slide-top');
+        const aniTopChildElement = document.querySelector('#use-slide-top');
+        const aniRightChildElement = document.querySelector('#use-slide-right');
+
+        parentAniTopElement.addEventListener('mouseover', () => {
+            aniTopChildElement.classList.remove('slide-top-out');
+            aniTopChildElement.classList.add('slide-top');
+
+            aniRightChildElement.classList.remove('slide-right-out');
+            aniRightChildElement.classList.add('slide-right');
+        });
+        parentAniTopElement.addEventListener('mouseout', () => {
+            aniTopChildElement.classList.remove('slide-top');
+            aniTopChildElement.classList.add('slide-top-out');
+
+            aniRightChildElement.classList.remove('slide-right');
+            aniRightChildElement.classList.add('slide-right-out');
+        });
+    </script>
+@endpush
