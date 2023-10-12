@@ -4,6 +4,15 @@ namespace App\Services\Stripe;
 
 class StripePlanAdapter {
 
+    /**
+     * Retrieve plan slug from Stripe Plan
+     */
+    public static function GetPlanSlug($StripePlan)
+    {
+        return array_map(function ($plan) use ($StripePlan) {
+            return $plan->id;
+        }, $StripePlan->data);
+    }
 
     /**
      * 

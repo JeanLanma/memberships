@@ -1,8 +1,11 @@
 <?php
 
+use App\Enums\Stripe\StripeEvent as StripeEventEnum;
 use App\Http\Controllers\Billing\BillingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Projobi\ProjobiController;
+use App\Models\Stripe\StripeEvent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,3 +64,12 @@ Route::get('projobi-redirect', function () {
     return redirect()->away(config('projobi.logout_redirect'));
 })->name('projobi.logout_redirect');
 require __DIR__.'/auth.php';
+
+
+Route::get('/stripe/events/{event?}', function($event = null) {
+    // return response()->json(config('projobi.stripe.plans'));
+    $events = $event 
+            ? (StripeEvent::find($event) ?? [])
+            : StripeEvent::all() ?? [];
+    return response()->json($events);
+})->name('stripe.events');
