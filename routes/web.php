@@ -4,7 +4,10 @@ use App\Enums\Stripe\StripeEvent as StripeEventEnum;
 use App\Http\Controllers\Billing\BillingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Projobi\ProjobiController;
+use App\Models\Stripe\CustomerSubscriptionUpdated;
+use App\Models\Stripe\CustomerUpdated;
 use App\Models\Stripe\StripeEvent;
+use App\Services\Stripe\StripeEventService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 

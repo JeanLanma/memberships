@@ -9,9 +9,7 @@ class StripePlanAdapter {
      */
     public static function GetPlanSlug($StripePlan)
     {
-        return array_map(function ($plan) use ($StripePlan) {
-            return $plan->id;
-        }, $StripePlan->data);
+        return array_search($StripePlan, config('projobi.stripe.plans'));
     }
 
     /**

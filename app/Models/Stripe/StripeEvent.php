@@ -11,6 +11,7 @@ class StripeEvent extends Model {
     protected $fillable = [
         'type',
         'payload',
+        'processed_payload'
     ];
 
     protected $appends = [

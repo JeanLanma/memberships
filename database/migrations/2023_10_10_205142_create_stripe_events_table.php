@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type')->default('unknown');
             $table->text('payload')->nullable();
+            $table->text('processed_payload')->nullable();
             $table->timestamps();
         });
     }

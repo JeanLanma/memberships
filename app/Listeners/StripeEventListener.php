@@ -22,9 +22,8 @@ class StripeEventListener
      */
     public function handle(object $event): void
     {
-        $eventType = $event->payload['type'];
-
         //ToDo Implementar integración con la plataforma
+        
         
         // write a log file to local disk
         StripeEventLogger::SaveToDatabase($event);
