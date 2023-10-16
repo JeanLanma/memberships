@@ -2,10 +2,10 @@
 
 namespace App\Models\Stripe;
 
-use App\Interfaces\Descriptable;
+use App\Interfaces\Storageable;
 use App\Interfaces\Stripe\CustomerEvent;
 
-class CustomerUpdated implements CustomerEvent, Descriptable {
+class CustomerUpdated implements CustomerEvent, Storageable {
 
     public $CustomerID;
     public $CustomerEmail;
@@ -29,6 +29,13 @@ class CustomerUpdated implements CustomerEvent, Descriptable {
     public function GetDescription(): string
     {
         return "Customer {$this->CustomerEmail} ({$this->CustomerID}) updated";
+    }
+
+    public function GetStoreObject(object $event): object
+    {
+        return (object) [
+            'subscription_id' => $this->CustomerID,
+        ];
     }
 
 }
