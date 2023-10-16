@@ -6,10 +6,32 @@ class StripePlanAdapter {
 
     /**
      * Retrieve plan slug from Stripe Plan
+     * 
+     * @param Stripe\Plan{string} $StripePlan
+     * @return string
      */
     public static function GetPlanSlug($StripePlan)
     {
-        return array_search($StripePlan, config('projobi.stripe.plans'));
+        return array_search($StripePlan, config('projobi.stripe.plans')) ?? 'free';
+    }
+
+    /**
+     * Retrive plan duration in days from Stripe Plan
+     * 
+     * @param string $StripePlanSlug
+     * @return int
+     */
+
+    public static function GetPlanDurationFromSlug($StripePlanSlug): int
+    {
+        $planDurationInDays = [
+            'plan_mensual' => 30,
+            'plan_semestral' => 180,
+            'plan_anual' => 365,
+            'plan_especial' => 1,
+        ];
+
+        return $planDurationInDays[$StripePlanSlug] ?? 0;
     }
 
     /**

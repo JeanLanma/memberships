@@ -25,7 +25,7 @@ class StripeEventListener
         //ToDo Implementar integración con la plataforma
         
         
-        // write a log file to local disk
+        // Save to database
         StripeEventLogger::SaveToDatabase($event);
     }
 }

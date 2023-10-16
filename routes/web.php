@@ -10,6 +10,7 @@ use App\Models\Stripe\StripeEvent;
 use App\Services\Stripe\StripeEventService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Stripe\Stripe;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,5 +75,7 @@ Route::get('/stripe/events/{event?}', function($event = null) {
     $events = $event 
             ? (StripeEvent::find($event) ?? [])
             : StripeEvent::all() ?? [];
+    $EventHandler = StripeEventService::GetEventModel($events);
+    dd($EventHandler);
     return response()->json($events);
 })->name('stripe.events');
