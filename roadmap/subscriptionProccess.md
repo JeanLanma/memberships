@@ -73,3 +73,14 @@ Posibles eventos de Stripe:
  `payload.data.object.status` // Status: string
  `payload.data.object.customer` // Id del usuario: string
 ```
+
+## Sobre actualizar la base de datos de Projobi
+
+## Estos son los datos necesarios
+* - projobi_user_id -> id del usuario en projobi
+* - is_subscriber -> enum('yes', 'no')
+* - subscription_id -> id del customer de stripe 'cus_...'
+* - subscription_status -> enum('active', 'canceled', 'incomplete', 'incomplete_expired', 'past_due', 'trialing', 'unpaid')
+* - plan_slug -> slug del plan 'plan_mensual', 'plan_...'
+* - plan_duration -> integer
+* - updated_at -> timestamp

@@ -25,8 +25,18 @@ class StripeEventService {
 
         $type = $event->payload['type'];
         return array_key_exists($type, $EventModels)
-            ? new $EventModels[$type]($event) 
+            ? new $EventModels[$type]($event)
             : new GenericStripeEvent($event);
+    }
+
+    /**
+     * Check if the event is valid, a valid event must have a type and a data object
+     * 
+     * @return bool
+     */
+    public static function IsValidEvent($event): bool
+    {
+        return isset($event->payload['type']) && isset($event->payload['data']['object']);
     }
 
 }

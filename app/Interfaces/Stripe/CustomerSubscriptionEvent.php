@@ -2,6 +2,8 @@
 
 namespace App\Interfaces\Stripe;
 
+use App\Models\User;
+
 interface CustomerSubscriptionEvent {
 
     public function GetCustomerID(object $event): string;
@@ -9,5 +11,6 @@ interface CustomerSubscriptionEvent {
     public function GetStatus(object $event): string;
     public function GetPlanDuration(): int;
     public function GetPlanSlug(): string;
+    public function GetUser(): User|null;
 
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Projobi;
 
 use App\Models\Projobi\ProjobiUser;
+use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class GetProjobiUserService {
     
@@ -14,15 +15,21 @@ class GetProjobiUserService {
     
     public static function get()
     {
-        $projobiUsers = ProjobiUser::all();
-
-        return $projobiUsers;
+        return ProjobiUser::all();
     }
 
-    public static function getUserById($id)
+    public static function getUserById(int $id)
     {
-        $projobiUser = ProjobiUser::where('id', $id)->first();
+        return ProjobiUser::where('id', $id)->first();
+    }
 
-        return $projobiUser;
+    public static function getUserBySubscriptionId(string $subscriptionId)
+    {
+        return ProjobiUser::where('subscription_id', $subscriptionId)->first();
+    }
+
+    public function GetUserByEmail(string $email)
+    {
+        return ProjobiUser::where('email', $email)->first();
     }
 }

@@ -71,11 +71,18 @@ require __DIR__.'/auth.php';
 
 
 Route::get('/stripe/events/{event?}', function($event = null) {
-    // return response()->json(config('projobi.stripe.plans'));
     $events = $event 
             ? (StripeEvent::find($event) ?? [])
             : StripeEvent::all() ?? [];
-    $EventHandler = StripeEventService::GetEventModel($events);
-    dd($EventHandler);
+
+    if(StripeEventService::IsValidEvent($events)) {
+        // return response()->json($events);
+        $EventHandler = StripeEventService::GetEventModel($events);
+        dd($EventHandler->GetStoreObject());
+    } else{
+        return response()->json([
+            'message' => 'Invalid event'
+        ], 400);
+    }
     return response()->json($events);
 })->name('stripe.events');

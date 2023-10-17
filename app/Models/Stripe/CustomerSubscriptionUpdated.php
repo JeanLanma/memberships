@@ -7,23 +7,27 @@ use App\Models\Projobi\ProjobiUser;
 use App\Interfaces\Storageable;
 
 use App\Models\Stripe\Traits\GetProjobiAttributes;
+use App\Models\User;
+use SebastianBergmann\Type\NullType;
 
 class CustomerSubscriptionUpdated implements CustomerSubscriptionEvent, Storageable {
 
     use GetProjobiAttributes;
 
-    public $CustomerID;
     public $Status;
     public $PriceID;
     public $PlanSlug;
+    public $CustomerID;
     public $planDuration;
-
+    public $_event;
+    
     public function __construct(object $event)
     {
-        $this->CustomerID = $this->GetCustomerID($event);
+        $this->_event = $event;
         $this->Status = $this->GetStatus($event);
         $this->PriceID = $this->GetPriceID($event);
         $this->PlanSlug = $this->GetPlanSlug($event);
+        $this->CustomerID = $this->GetCustomerID($event);
         $this->planDuration = $this->GetPlanDuration($event);
     }
 
@@ -42,14 +46,19 @@ class CustomerSubscriptionUpdated implements CustomerSubscriptionEvent, Storagea
         return "Customer {$this->CustomerID} subscription status changed to {$this->Status}";
     }
 
-    public function GetStoreObject(object $event): object
+    public function GetStoreObject(): object
     {
         return (object) [
-            'subscription_id' => $this->CustomerID,
             'status' => $this->Status,
             'is_subscriber' => $this->Status == 'active' ? 'yes' : 'no',
-            'plan_slug' => $this->PlanSlug
+            'plan_slug' => $this->PlanSlug,
+            'subscription_active_until' => '',
+            'updated_at' => now()
         ];
-        return ProjobiUser::where('id', $event->customer_user->projobi_user_id)->first();
+    }
+
+    public function GetUser(): User|null
+    {
+        return User::where('stripe_id', $this->CustomerID)->first();
     }
 }

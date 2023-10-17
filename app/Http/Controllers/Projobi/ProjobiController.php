@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Projobi;
 
 use App\Services\Projobi\GetProjobiUserService;
 use App\Http\Controllers\Controller;
-use App\Services\Projobi\UpdateProjobiUserService;
 use Illuminate\Http\Request;
 
 class ProjobiController extends Controller
