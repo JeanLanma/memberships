@@ -39,4 +39,8 @@ class StripeEventService {
         return isset($event->payload['type']) && isset($event->payload['data']['object']);
     }
 
+    public static function ProcessEventModel($EventModel)
+    {
+        // Modify the user's subscription
+    }
 }

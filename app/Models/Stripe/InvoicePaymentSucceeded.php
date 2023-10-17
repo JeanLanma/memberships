@@ -52,7 +52,7 @@ class InvoicePaymentSucceeded implements CustomerEvent, Storageable{
 
     public function GetDescription(): string
     {
-        return "Customer {$this->CustomerEmail} ({$this->CustomerID}) invoice payment succeeded";
+        return "Customer {$this->CustomerEmail} ({$this->CustomerID}) invoice payment succeeded staus changed to {$this->status}";
     }
 
     public function GetStoreObject(): object

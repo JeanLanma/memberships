@@ -3,7 +3,6 @@
 namespace App\Services\Stripe;
 
 use Illuminate\Support\Facades\DB;
-use SplSubject;
 
 class StripeEventLogger
 {
@@ -16,19 +15,5 @@ class StripeEventLogger
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-    }
-
-    public static function ProcessPayload(object $event): string
-    {
-        return json_encode([
-            'type' => $event->payload['type'],
-            'payload' => json_encode($event->payload),
-            'main_subject' => ''
-        ]);
-    }
-
-    public function GetMainSubject(object $event): string
-    {
-        return $event->payload['type']['object']['customer'];
     }
 }
