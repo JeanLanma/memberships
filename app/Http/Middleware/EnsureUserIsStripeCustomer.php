@@ -16,7 +16,12 @@ class EnsureUserIsStripeCustomer
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() && ! $request->user()->hasStripeId()) {
-            return redirect(route("dashboard"));
+            return redirect(route("billing.payment_method_form"))
+            ->with('notification', [
+                'title' => __("Falta un metodo de pago"),
+                'message' => __("Por favor agregue un metodo de pago primero para poder continuar."),
+                'type' => 'warning'
+            ]);
         }
 
         return $next($request);

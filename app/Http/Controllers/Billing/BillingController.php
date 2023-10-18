@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Billing;
 
-use App\Http\Controllers\Controller;
-use App\Models\Country;
-use Illuminate\Http\Request;
 use Laravel\Cashier\Exceptions\IncompletePayment;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Stripe\StripeClient;
+use App\Models\Country;
+use App\Services\Stripe\StripePlanAdapter;
 
 class BillingController extends Controller
 {
@@ -46,17 +47,23 @@ class BillingController extends Controller
     public function plans()
     {
         if (!auth()->user()->hasDefaultPaymentMethod()) {
-            return redirect()->back();
+            return redirect()->route('billing.payment_method_form');
         }
-
+        if( auth()->user()->subscribed() ) {
+            return redirect()->route('billing.my_subscription');
+        }
         $key = config("cashier.secret");
         $stripe = new StripeClient($key);
 
         $plans = $stripe->plans->all();
 
         $plans = $plans->data;
-
-
+        
+        foreach ($plans as $plan) {
+            $plan->metadata = StripePlanAdapter::PlanMetadataAdapter($plan);
+            $plan->features = StripePlanAdapter::FilterPlanFeatures($plan->metadata);
+        }
+        // dd($plans);
         return view("front.billing.plans", [
             "plans" => $plans,
         ]);
@@ -74,10 +81,21 @@ class BillingController extends Controller
         $stripe = new StripeClient($key);
         $plan = $stripe->plans->retrieve(request("price_id"));
         try {
-            auth()
+
+            if(request()->has('promo_code')) {
+                auth()
+                ->user()
+                ->newSubscription('default', request("price_id"))
+                ->trialDays(30)
+                ->create(auth()->user()->defaultPaymentMethod()->id);
+            } else {
+                auth()
                 ->user()
                 ->newSubscription('default', request("price_id"))
                 ->create(auth()->user()->defaultPaymentMethod()->id);
+            }
+
+
 
                 return redirect(route("billing.my_subscription"))
                     ->with('notification', [

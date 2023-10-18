@@ -43,3 +43,7 @@ function getSubscriptionNameForUser(): string
 function isSubscribed(): bool {
     return auth()->check() && auth()->user()->subscribed();
 }
+
+function userHasPaymentMethod(): bool {
+    return auth()->user()->hasPaymentMethod();
+}

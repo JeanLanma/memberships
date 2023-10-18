@@ -2,8 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Services\Stripe\StripeEventLogger;
+use App\Services\Stripe\StripeEventService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\DB;
 
 class StripeEventListener
 {
@@ -20,8 +23,20 @@ class StripeEventListener
      */
     public function handle(object $event): void
     {
-        $eventType = $event->payload['type'];
-
         //ToDo Implementar integración con la plataforma
+        if(StripeEventService::IsValidEvent($event))
+        {
+            $eventModel = StripeEventService::GetEventModel($event);
+            $event->processed = $eventModel->GetDescription();
+
+            // Update Database
+            if($eventModel->HasStoreUpdate())
+            {
+                $eventModel->UpdateStore();
+            }
+        }
+        
+        // Save to database
+        StripeEventLogger::SaveToDatabase($event);
     }
 }
