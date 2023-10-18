@@ -2,63 +2,14 @@
 
 namespace App\Models\Stripe;
 
-use App\Interfaces\Stripe\CustomerSubscriptionEvent;
-use App\Models\Projobi\ProjobiUser;
-use App\Interfaces\Storageable;
+class CustomerSubscriptionUpdated extends CustomerSubscription {
 
-use App\Models\Stripe\Traits\GetProjobiAttributes;
-use App\Models\User;
-use SebastianBergmann\Type\NullType;
-
-class CustomerSubscriptionUpdated implements CustomerSubscriptionEvent, Storageable {
-
-    use GetProjobiAttributes;
-
-    public $Status;
-    public $PriceID;
-    public $PlanSlug;
-    public $CustomerID;
-    public $planDuration;
-    public $_event;
-    
-    public function __construct(object $event)
-    {
-        $this->_event = $event;
-        $this->Status = $this->GetStatus($event);
-        $this->PriceID = $this->GetPriceID($event);
-        $this->PlanSlug = $this->GetPlanSlug($event);
-        $this->CustomerID = $this->GetCustomerID($event);
-        $this->planDuration = $this->GetPlanDuration($event);
-    }
-
-    public function GetCustomerID(object $event): string
-    {
-        return $event->payload['data']['object']['customer'];
-    }
-
-    public function GetPriceID(object $event): string
-    {
-        return $event->payload['data']['object']['plan']['id'];
-    }
-
+    /**
+     * @override
+     */
     public function GetDescription(): string
     {
-        return "Customer {$this->CustomerID} subscription status changed to {$this->Status}";
+        return "Customer {$this->CustomerID} subscription updated, status changed to {$this->Status}";
     }
 
-    public function GetStoreObject(): object
-    {
-        return (object) [
-            'status' => $this->Status,
-            'is_subscriber' => $this->Status == 'active' ? 'yes' : 'no',
-            'plan_slug' => $this->PlanSlug,
-            'subscription_active_until' => '',
-            'updated_at' => now()
-        ];
-    }
-
-    public function GetUser(): User|null
-    {
-        return User::where('stripe_id', $this->CustomerID)->first();
-    }
 }

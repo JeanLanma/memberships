@@ -66,6 +66,16 @@ class InvoicePaymentSucceeded implements CustomerEvent, Storageable{
         ];
     }
 
+    public function HasStoreUpdate(): bool
+    {
+        return false;
+    }
+
+    public function UpdateStore(): void
+    {
+        return;
+    }
+
     public function GetUser(): User
     {
         return User::where('email', $this->CustomerEmail)->first();

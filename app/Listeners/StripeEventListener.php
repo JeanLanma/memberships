@@ -28,6 +28,12 @@ class StripeEventListener
         {
             $eventModel = StripeEventService::GetEventModel($event);
             $event->processed = $eventModel->GetDescription();
+
+            // Update Database
+            if($eventModel->HasStoreUpdate())
+            {
+                $eventModel->UpdateStore();
+            }
         }
         
         // Save to database

@@ -60,4 +60,17 @@ class UpdateProjobiUserService {
             'subscription_id' => $CustomerID
         ]);
     }
+
+    public static function UpdateSubscription($projobiUserId, $updateData)
+    {
+        $projobiUser = ProjobiUser::where('id', $projobiUserId)->first();
+
+        if(!$projobiUser || is_null($projobiUser)) {
+            return null;
+        }
+
+        $projobiUser->update($updateData);
+
+        return $projobiUser;
+    }
 }

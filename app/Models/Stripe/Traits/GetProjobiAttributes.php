@@ -21,4 +21,9 @@ trait GetProjobiAttributes {
         return $event->payload['data']['object']['status'];
     }
 
+    public function GetPostLimit(): int
+    {
+        return StripePlanAdapter::GetPostLimitFromSlug($this->PlanSlug);
+    }
+
 }

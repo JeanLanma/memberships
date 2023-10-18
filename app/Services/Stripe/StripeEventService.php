@@ -6,8 +6,13 @@ use App\Models\Stripe\InvoicePaymentActionRequired;
 use App\Models\Stripe\CustomerSubscriptionUpdated;
 use App\Models\Stripe\InvoicePaymentSucceeded;
 use App\Interfaces\Stripe\CustomerEvent;
+use App\Models\Stripe\Customer;
+use App\Models\Stripe\CustomerDeleted;
+use App\Models\Stripe\CustomerSubscription;
+use App\Models\Stripe\CustomerSubscriptionDeleted;
 use App\Models\Stripe\CustomerUpdated;
 use App\Models\Stripe\GenericStripeEvent;
+use App\Services\Projobi\UpdateProjobiUserService;
 
 class StripeEventService {
 
@@ -15,10 +20,10 @@ class StripeEventService {
     {
         $EventModels = [
             'customer.updated' => CustomerUpdated::class,
-            'customer.deleted' => CustomerUpdated::class,
+            'customer.deleted' => CustomerDeleted::class,
             'customer.subscription.created' => CustomerSubscriptionUpdated::class,
             'customer.subscription.updated' => CustomerSubscriptionUpdated::class,
-            'customer.subscription.deleted' => CustomerSubscriptionUpdated::class,
+            'customer.subscription.deleted' => CustomerSubscriptionDeleted::class,
             'invoice.payment_action_required' => InvoicePaymentActionRequired::class,
             'invoice.payment_succeeded' => InvoicePaymentSucceeded::class,
         ];
@@ -39,8 +44,4 @@ class StripeEventService {
         return isset($event->payload['type']) && isset($event->payload['data']['object']);
     }
 
-    public static function ProcessEventModel($EventModel)
-    {
-        // Modify the user's subscription
-    }
 }

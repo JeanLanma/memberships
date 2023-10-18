@@ -34,6 +34,18 @@ class StripePlanAdapter {
         return $planDurationInDays[$StripePlanSlug] ?? 0;
     }
 
+    public static function GetPostLimitFromSlug($StripePlanSlug): int
+    {
+        $PostsLimits = [
+            'plan_mensual' => 1,
+            'plan_semestral' => 2,
+            'plan_anual' => 3,
+            'plan_especial' => 1,
+        ];
+
+        return $PostsLimits[$StripePlanSlug] ?? 0;
+    }
+
     /**
      * 
      * @param Stripe\Plan $StripePlan
