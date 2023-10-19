@@ -61,10 +61,12 @@ class Customer implements CustomerEvent, Storageable {
     public function UpdateStore(): void
     {
         $user = $this->GetUser();
-        UpdateProjobiUserService::CustomerUpdate($user->projobi_user_id, $this->GetStoreObject()['subscription_id']);
+        if($user){
+            UpdateProjobiUserService::CustomerUpdate($user->projobi_user_id, $this->GetStoreObject()['subscription_id']);
+        };
     }
 
-    public function GetUser(): User
+    public function GetUser(): User|null
     {
         return User::where('email', $this->CustomerEmail)->first();
     }

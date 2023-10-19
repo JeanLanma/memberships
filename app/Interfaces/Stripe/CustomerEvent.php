@@ -9,6 +9,6 @@ interface CustomerEvent {
     public function GetCustomerID(object $event): string;
     public function GetCustomerEmail(object $event): string;
     public function GetCustomerName(object $event): string;
-    public function GetUser(): User;
+    public function GetUser(): User|null;
 
 }
