@@ -22,7 +22,7 @@ class AuthenticateProjobiUser
             return $next($request);
         }
 
-        else if($request->has('handShake') && $request->has('user_id') && $request->header('referer') == 'http://projobi.test:8081/')
+        else if($request->has('handShake') && $request->has('user_id') && $request->header('referer') == config('projobi.projobi_home'))
         {
             $ProjobiHandshake = 'secret';
             // Check if request is from projobi
