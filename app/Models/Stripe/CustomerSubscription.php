@@ -48,7 +48,7 @@ class CustomerSubscription implements CustomerSubscriptionEvent, Storageable {
     public function GetStoreObject(): array
     {
         return [
-            'status' => $this->Status,
+            'subscription_status' => $this->Status,
             'is_subscriber' => $this->Status == 'active' ? 'yes' : 'no',
             'plan_slug' => $this->PlanSlug,
             'subscription_active_until' => now()->addDays($this->planDuration),
