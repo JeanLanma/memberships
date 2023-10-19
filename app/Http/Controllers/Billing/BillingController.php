@@ -37,7 +37,7 @@ class BillingController extends Controller
             ]);
         }
         auth()->user()->updateDefaultPaymentMethod(request("pm"));
-        return back()
+        return redirect()->route('billing.my_subscription')
             ->with('notification', [
                 'title' => __("¡Método de pago actualizado!"),
                 'message' => __("Tu método de pago ha sido actualizado correctamente")

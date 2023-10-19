@@ -76,7 +76,6 @@ Route::get('/stripe/events/{event?}', function($event = null) {
             : StripeEvent::all() ?? [];
 
     if(StripeEventService::IsValidEvent($events)) {
-        // return response()->json($events);
         $EventHandler = StripeEventService::GetEventModel($events);
         dd($EventHandler->GetStoreObject());
     } else{
