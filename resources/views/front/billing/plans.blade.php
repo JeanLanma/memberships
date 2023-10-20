@@ -19,9 +19,12 @@
             <div class="container px-5 mx-auto">
                 <div class="flex flex-wrap -m-4">
                     @foreach($plans as $plan)
+                    @if (optional($plan->metadata)->hidden != null && optional($plan->metadata)->hidden == 'si')
+                        @continue
+                    @endif
                         <div class="p-4 md:w-1/3 w-full">
                             <div class="h-full p-6 rounded-lg border-2 border-main  flex flex-col relative overflow-hidden">
-                                @if($plan->metadata->adds == 2)
+                                @if(optional($plan->metadata)->highlight)
                                     <span class="bg-main text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">
                                         POPULAR
                                     </span>

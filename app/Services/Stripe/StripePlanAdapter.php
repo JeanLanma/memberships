@@ -71,4 +71,16 @@ class StripePlanAdapter {
         }
         return $features;
     }
+
+    /**
+     * Filters the plans to show in the view 
+     * 
+     * @return array
+     */
+    public static function GetPlanParameters(): array
+    {
+        return [
+            'created' => ['gte' => 1696140000]
+        ];
+    }
 }
