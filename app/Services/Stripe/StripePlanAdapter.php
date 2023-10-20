@@ -80,7 +80,7 @@ class StripePlanAdapter {
     public static function GetPlanParameters(): array
     {
         return [
-            'created' => ['gte' => 1673157600]
+            'created' => ['gte' => 1693555276]
         ];
     }
 }
