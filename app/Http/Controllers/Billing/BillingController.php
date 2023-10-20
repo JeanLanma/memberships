@@ -55,7 +55,7 @@ class BillingController extends Controller
         $key = config("cashier.secret");
         $stripe = new StripeClient($key);
 
-        $plans = $stripe->plans->all();
+        $plans = $stripe->plans->all(StripePlanAdapter::GetPlanParameters());
 
         $plans = $plans->data;
         
