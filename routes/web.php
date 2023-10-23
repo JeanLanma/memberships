@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(["middleware" => "is_stripe_customer"], function () {
         Route::get('/billing/portal', function () {
-            return auth()->user()->redirectToBillingPortal(route('dashboard'));
+            return auth()->user()->redirectToBillingPortal(route('billing.my_subscription'));
         })->name("billing.portal");
     });
 });
