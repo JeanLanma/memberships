@@ -49,7 +49,7 @@ class CustomerSubscription implements CustomerSubscriptionEvent, Storageable {
     {
         return [
             'subscription_status' => $this->Status,
-            'is_subscriber' => $this->Status == 'active' ? 'yes' : 'no',
+            'is_subscriber' => ($this->Status == 'active' || $this->Status == 'trialing') ? 'yes' : 'no',
             'plan_slug' => $this->PlanSlug,
             'subscription_active_until' => now()->addDays($this->planDuration),
             'post_limit' => $this->GetPostLimit(),
