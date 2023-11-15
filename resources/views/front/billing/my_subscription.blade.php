@@ -12,13 +12,39 @@
         <section class="text-gray-600 body-font max-w-7xl mx-auto">
             <div class="container px-5 py-12 md:py-12 mx-auto">
                 <div class="bg-white shadow-sm sm:rounded-lg p-3 sm:p-6 flex flex-col md:flex-row sm:items-center items-start mx-auto">
-                    <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900">Te agradecemos por formar parte de <span class="text-main font-bold">Projobi</span>. Disfruta de tu <span class="text-main font-bold">Plan {{ $subscription }}</span>. <br> <span class="text-xl font-normal">Puedes administrar tu subscripción desde el portal de facturación.</span></h1>
+                    <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900">Te agradecemos por formar parte de <span class="text-main font-bold">Projobi</span>. Disfruta de tu <span class="text-main font-bold">Plan {{ $subscription }}</span>. subscripcion vigente hasta: {{ auth()->user()->subscription('default')->trial_ends_at->formatLocalized('%d de %B de %Y') }}<br> <span class="text-xl font-normal">Puedes administrar tu subscripción desde el portal de facturación.</span></h1>
                     <a href="{{ route('billing.portal') }}" class="flex-shrink-0">
                         <button class="text-white border-0 py-2 px-8 focus:outline-none bg-main hover:bg-main/50 rounded text-lg mt-10 md:mt-0 uppercase font-bold transition-all duration-300">Administrar mi subscripción</button>
                     </a>
                 </div>
             </div>
         </section>
+
+        <!-- Add coupon section -->
+
+        <section x-data="{ }">
+
+            <div class="text-gray-600 body-font max-w-7xl mx-auto flex justify-center">
+                <button @click="$dispatch('open-modal', 'discountModal')" id="showCouponFormBtn" class="mb-8 mx-auto text-white border-0 py-2 px-8 focus:outline-none bg-main hover:bg-main/50 rounded text-lg mt-10 md:mt-0 uppercase font-bold transition-all duration-300">Tengo un cupon</button>
+            </div>
+            <x-modal name="discountModal"  x-show="open" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <form id="applyDiscountForm" action="{{ route('billing.promo_code') }}" method="post">
+                    <div class="p-6">
+                        <h2 class="text-lg font-medium text-gray-900">Codigo de descuento <span id="couponError" class="text-red-500 opacity-0 text-base transition-all duration-300"></span> <span id="couponSuccess" class="text-green-500 opacity-0 text-base transition-opacity duration-300"></span></h2>
+                        <div class="mt-4">
+                            <input type="text" name="promo_code" id="promo_code" class="form-input w-full rounded-md shadow-sm" placeholder="">
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Aplicar descuento</button>
+                            <button type="button" @click="$dispatch('close', 'discountModal')" class="px-4 py-2 border border-red-600 text-red-600 rounded-md">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </x-modal>
+
+
+        </section>
+        
 
         @else
             
@@ -67,4 +93,66 @@
             </div>
         </div>
     </div>
+
+    @push("scripts")
+
+    <script>
+    const reloaPage = () => {
+        window.location.reload();
+    }
+    const applyDiscountForm = document.getElementById("applyDiscountForm");
+
+    const showResponseMessage = async (response) => {
+        let showMessage = false;
+        const messageType = (response.is_valid_promo_code == false) ? "couponError" : "couponSuccess";
+        const responseMessageContainer = document.getElementById(messageType);
+
+        responseMessageContainer.classList.remove("opacity-0");
+        responseMessageContainer.textContent = response.message;
+        setTimeout(() => {
+            responseMessageContainer.classList.add("opacity-0");
+            responseMessageContainer.textContent = "";
+            reloaPage()
+        }, 6000);
+
+    }
+    
+    const applyDiscount = async () => {
+        // Send post request to the server
+        const data = new FormData(applyDiscountForm);
+        const url = applyDiscountForm.getAttribute("action");
+        const method = applyDiscountForm.getAttribute("method");
+        const showCouponFormBtn = document.getElementById("showCouponFormBtn");
+        const coupon = document.getElementById("coupon");
+
+        try {
+
+            const response = await fetch(url, {
+                                method: method,
+                                body: data,
+                                headers: {
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                }
+                            })
+
+            const responseData = await response.json();
+
+            showResponseMessage(responseData);
+
+            console.log(responseData);
+            
+        } catch (error) {
+            couponError.classList.remove("opacity-0");
+            couponError.textContent = "Ups, algo salio mal, intenta de nuevo";
+        }
+    }
+
+    applyDiscountForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        applyDiscount();
+    });
+
+    </script>
+
+    @endpush
 </x-app-layout>

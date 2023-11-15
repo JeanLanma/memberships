@@ -120,4 +120,57 @@ class BillingController extends Controller
         $subscription = getSubscriptionNameForUser();
         return view("front.billing.my_subscription", compact("subscription"));
     }
+
+    public function applyPromoCode()
+    {
+        $promoCode = request("promo_code");
+
+        if ($this->isValidPromoCode($promoCode)) {
+            try {
+                $subscription = auth()->user()->subscription('default');
+                $oldTrialEndsAt = $subscription->trial_ends_at;
+                $subscription->extendTrial(
+                    $subscription->trial_ends_at->addDays(30)
+                );
+                return response()->json([
+                    "message" => "¡Codigo aplicado correctamente, su subscripción ha aumentado 30 dias!",
+                    "success" => true,
+                    "promo_code" => $promoCode,
+                    "is_valid_promo_code" => true,
+                    "user_subscription_trial_ends_at" => $subscription->trial_ends_at,
+                    "user_subscription_old_trial_ends_at" => $oldTrialEndsAt,
+                ]);
+            } catch (\Throwable $th) {
+                return response()->json([
+                    "message" => "Error al actualizar su subscripcion!",
+                    "success" => false,
+                    "is_valid_promo_code" => false,
+                    "user_subscription_trial_ends_at" => $subscription->trial_ends_at,
+                    "user_subscription_old_trial_ends_at" => $oldTrialEndsAt,
+                ]);
+            }
+        } else {
+            return response()->json([
+                "message" => "¡Codigo invalido!",
+                "success" => false,
+                "is_valid_promo_code" => false,
+            ]);
+        }
+    }
+
+    public function isValidPromoCode($promoCode)
+    {
+        return $promoCode === "PROJOBI30";
+    }
+
+    public function extendUserSubscription()
+    {
+        $user = auth()->user();
+        $user->subscription('default')->extend();
+        return redirect()->route('billing.my_subscription')
+            ->with('notification', [
+                'title' => __("¡Gracias por contratar un plan!"),
+                'message' => __('Tu suscripción ha sido extendida correctamente')
+            ]);
+    }
 }

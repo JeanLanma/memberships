@@ -24,6 +24,17 @@ class AuthenticateProjobiUser
 
         else if($request->has('handShake') && $request->has('user_id') && $request->header('referer') == config('projobi.projobi_home'))
         {
+            // First make sure that there's no another user logged in
+            if(auth()->check() && auth()->user()->projobi_user_id != $request->user_id)
+            {
+                auth()->logout();
+                Auth::guard('web')->logout();
+    
+                $request->session()->invalidate();
+        
+                $request->session()->regenerateToken();
+            }
+
             $ProjobiHandshake = 'secret';
             // Check if request is from projobi
             if($request->handShake != $ProjobiHandshake)

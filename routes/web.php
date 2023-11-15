@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
         Route::get("/plans", "plans")->name("plans")->middleware('is_stripe_customer');
         Route::post("/subscribe", "processSubscription")->name("process_subscription");
         Route::get("/my-subscription", "mySubscription")->name("my_subscription");
+
+        Route::post('promo-code', 'applyPromoCode')->name('promo_code');
     });
 
     Route::group(["middleware" => "is_stripe_customer"], function () {
