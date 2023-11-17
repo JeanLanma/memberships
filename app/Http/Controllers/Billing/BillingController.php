@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Stripe\StripeClient;
 use App\Models\Country;
+use App\Services\Projobi\UpdateProjobiUserService;
 use App\Services\Stripe\StripePlanAdapter;
 
 class BillingController extends Controller
@@ -132,6 +133,8 @@ class BillingController extends Controller
                 $subscription->extendTrial(
                     $subscription->trial_ends_at->addDays(30)
                 );
+                $updateProjobiUser = UpdateProjobiUserService::UpdateSubscriptionTrialEndsAt(auth()->user()->projobi_user_id, $subscription->trial_ends_at);
+                
                 return response()->json([
                     "message" => "¡Codigo aplicado correctamente, su subscripción ha aumentado 30 dias!",
                     "success" => true,
@@ -139,6 +142,7 @@ class BillingController extends Controller
                     "is_valid_promo_code" => true,
                     "user_subscription_trial_ends_at" => $subscription->trial_ends_at,
                     "user_subscription_old_trial_ends_at" => $oldTrialEndsAt,
+                    "update_projobi_user" => $updateProjobiUser,
                 ]);
             } catch (\Throwable $th) {
                 return response()->json([
@@ -154,6 +158,8 @@ class BillingController extends Controller
                 "message" => "¡Codigo invalido o no aplica!",
                 "success" => false,
                 "is_valid_promo_code" => false,
+                "user_subscription_trial_ends_at" => $subscription->trial_ends_at,
+                "user_subscription_old_trial_ends_at" => $oldTrialEndsAt,
             ]);
         }
     }

@@ -73,4 +73,20 @@ class UpdateProjobiUserService {
 
         return $projobiUser;
     }
+
+    public static function UpdateSubscriptionTrialEndsAt($projobiUserId, $trialEndsAt)
+    {
+        $projobiUser = ProjobiUser::where('id', $projobiUserId)->first();
+
+        if(!$projobiUser || is_null($projobiUser)) {
+            return null;
+        }
+
+        $projobiUser->update([
+            'subscription_active_until' => $trialEndsAt,
+            'updated_at' => now()
+        ]);
+
+        return $projobiUser;
+    }
 }
