@@ -1,5 +1,13 @@
 <?php
 
+function formatDateString(): string 
+{
+    \Carbon\Carbon::setLocale('es');
+    $trialEndsAt = auth()->user()->subscription('default')->trial_ends_at;
+    $formattedDate = $trialEndsAt->isoFormat('D [de] MMMM [de] YYYY');
+    return $formattedDate;
+}
+
 function formatCurrency($amount): int|string 
 {
     if (!$amount) {

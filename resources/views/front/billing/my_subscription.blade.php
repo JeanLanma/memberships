@@ -12,7 +12,7 @@
         <section class="text-gray-600 body-font max-w-7xl mx-auto">
             <div class="container px-5 py-12 md:py-12 mx-auto">
                 <div class="bg-white shadow-sm sm:rounded-lg p-3 sm:p-6 flex flex-col md:flex-row sm:items-center items-start mx-auto">
-                    <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900">Te agradecemos por formar parte de <span class="text-main font-bold">Projobi</span>. Disfruta de tu <span class="text-main font-bold">Plan {{ $subscription }}</span>. subscripcion vigente hasta: {{ auth()->user()->subscription('default')->trial_ends_at->formatLocalized('%d de %B de %Y') }}<br> <span class="text-xl font-normal">Puedes administrar tu subscripción desde el portal de facturación.</span></h1>
+                    <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900">Te agradecemos por formar parte de <span class="text-main font-bold">Projobi</span>. Disfruta de tu <span class="text-main font-bold">Plan {{ $subscription }}</span>. subscripcion vigente hasta: {{ formatDateString() }}<br> <span class="text-xl font-normal">Puedes administrar tu subscripción desde el portal de facturación.</span></h1>
                     <a href="{{ route('billing.portal') }}" class="flex-shrink-0">
                         <button class="text-white border-0 py-2 px-8 focus:outline-none bg-main hover:bg-main/50 rounded text-lg mt-10 md:mt-0 uppercase font-bold transition-all duration-300">Administrar mi subscripción</button>
                     </a>
@@ -35,7 +35,7 @@
                             <input type="text" name="promo_code" id="promo_code" class="form-input w-full rounded-md shadow-sm" placeholder="">
                         </div>
                         <div class="mt-4">
-                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Aplicar descuento</button>
+                            <button type="submit" id="applyDiscountForm-Btn" class="px-4 py-2 bg-main text-white rounded-md">Aplicar descuento</button>
                             <button type="button" @click="$dispatch('close', 'discountModal')" class="px-4 py-2 border border-red-600 text-red-600 rounded-md">Cancelar</button>
                         </div>
                     </div>
@@ -101,18 +101,29 @@
         window.location.reload();
     }
     const applyDiscountForm = document.getElementById("applyDiscountForm");
+    const applyDiscountFormBtn = document.getElementById("applyDiscountForm-Btn");
 
     const showResponseMessage = async (response) => {
         let showMessage = false;
+        applyDiscountFormBtn.disabled = true;
+        applyDiscountFormBtn.style.cursor = "wait";
         const messageType = (response.is_valid_promo_code == false) ? "couponError" : "couponSuccess";
+        const coupon = document.getElementById("promo_code");
         const responseMessageContainer = document.getElementById(messageType);
 
         responseMessageContainer.classList.remove("opacity-0");
         responseMessageContainer.textContent = response.message;
+        coupon.placeholder = coupon.value;
+        coupon.value = null;
         setTimeout(() => {
             responseMessageContainer.classList.add("opacity-0");
             responseMessageContainer.textContent = "";
-            reloaPage()
+            coupon.placeholder = "";
+            if(response.is_valid_promo_code == true) {
+                reloaPage()
+            }
+            applyDiscountFormBtn.disabled = false;
+            applyDiscountFormBtn.style.cursor = "pointer";
         }, 6000);
 
     }
@@ -123,7 +134,6 @@
         const url = applyDiscountForm.getAttribute("action");
         const method = applyDiscountForm.getAttribute("method");
         const showCouponFormBtn = document.getElementById("showCouponFormBtn");
-        const coupon = document.getElementById("coupon");
 
         try {
 
@@ -143,7 +153,7 @@
             
         } catch (error) {
             couponError.classList.remove("opacity-0");
-            couponError.textContent = "Ups, algo salio mal, intenta de nuevo";
+            couponError.textContent = "Ups, algo salio mal, recargue la pagina e intente de nuevo";
         }
     }
 

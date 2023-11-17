@@ -124,11 +124,11 @@ class BillingController extends Controller
     public function applyPromoCode()
     {
         $promoCode = request("promo_code");
+        $subscription = auth()->user()->subscription('default');
+        $oldTrialEndsAt = $subscription->trial_ends_at;
 
-        if ($this->isValidPromoCode($promoCode)) {
+        if ($this->isValidPromoCode($promoCode, $oldTrialEndsAt)) {
             try {
-                $subscription = auth()->user()->subscription('default');
-                $oldTrialEndsAt = $subscription->trial_ends_at;
                 $subscription->extendTrial(
                     $subscription->trial_ends_at->addDays(30)
                 );
@@ -151,16 +151,23 @@ class BillingController extends Controller
             }
         } else {
             return response()->json([
-                "message" => "¡Codigo invalido!",
+                "message" => "¡Codigo invalido o no aplica!",
                 "success" => false,
                 "is_valid_promo_code" => false,
             ]);
         }
     }
 
-    public function isValidPromoCode($promoCode)
+    public function limitSubscriptionTrial($trialEndsAt)
     {
-        return $promoCode === "PROJOBI30";
+        $trialEndsAt = \Carbon\Carbon::parse($trialEndsAt);
+        $nowPlusDays = \Carbon\Carbon::now()->addDays(33);
+        return $trialEndsAt->lessThan($nowPlusDays);
+    }
+
+    public function isValidPromoCode($promoCode, $trialEndsAt)
+    {
+        return $promoCode === "PROJOBI30" && $this->limitSubscriptionTrial($trialEndsAt);
     }
 
     public function extendUserSubscription()
