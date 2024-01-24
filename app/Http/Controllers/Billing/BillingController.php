@@ -119,7 +119,7 @@ class BillingController extends Controller
     public function mySubscription()
     {
         $subscription = getSubscriptionNameForUser();
-        return view("front.billing.my_subscription", compact("subscription"));
+        return view("front.standby.my_subscription", compact("subscription"));
     }
 
     public function applyPromoCode()
