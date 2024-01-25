@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Mi suscripción Stand By
+            Mi suscripción.
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
         <section class="text-gray-600 body-font max-w-7xl mx-auto">
             <div class="container px-5 py-12 md:py-12 mx-auto">
                 <div class="bg-white shadow-sm sm:rounded-lg p-3 sm:p-6 flex flex-col md:flex-row sm:items-center items-start mx-auto">
-                    <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900">Te agradecemos por formar parte de <span class="text-main font-bold">Projobi</span>. Disfruta de tu <span class="text-main font-bold">Plan {{ $subscription }}</span>. subscripcion vigente hasta: {{ formatDateString() }}<br> <span class="text-xl font-normal">Puedes administrar tu subscripción desde el portal de facturación.</span></h1>
+                    <h1 class="flex-grow sm:pr-16 text-xl title-font text-gray-900"> <span class="text-2xl font-medium"> Te agradecemos por formar parte de <span class="text-main font-bold">Projobi</span>.</span> <br><br> Disfruta de tu <span class="text-main font-bold">Plan {{ $subscription }}</span>. <br><span class="font-semibold">Subscripcion vigente hasta</span> {{ formatDateString() }}<br><br> <span class="text-xl font-thin">Puedes administrar tu subscripción desde el portal de facturación.</span></h1>
                     <a href="{{ route('billing.portal') }}" class="flex-shrink-0">
                         <button class="text-white border-0 py-2 px-8 focus:outline-none bg-main hover:bg-main/50 rounded text-lg mt-10 md:mt-0 uppercase font-bold transition-all duration-300">Administrar mi subscripción</button>
                     </a>
@@ -51,7 +51,7 @@
         <section class="text-gray-600 body-font max-w-7xl mx-auto">
             <div class="container px-5 sm:px-8 py-12 mx-auto">
                 <div class="flex flex-col sm:flex-row sm:items-center items-start mx-auto">
-                    <h1 class="flex-grow sm:pr-16 text-2xl font-medium title-font text-gray-900"> <span class="text-center">Bienvenido {{ auth()->user()->name }}! </span><br> Felicidades por unirte a <span class="text-main font-bold">Projobi</span>. Comienza a disfrutar de todos los beneficios que tenemos para ti ahora!</h1>
+                    <h1 class="flex-grow sm:pr-16 text-xl  title-font text-gray-900"> <span class="text-center text-3xl">Bienvenido<span class="text-main font-bold"> <br class="md:hidden"> {{ auth()->user()->name }}</span>. </span><br><br> Felicidades por unirte a <span class="text-main font-bold">Projobi</span> comienza a disfrutar de todos los beneficios que tenemos para ti ahora!</h1>
                 </div>
                 <div class="flex flex-col sm:flex-row justify-center gap-8 mt-8 sm:mt-16">
 
